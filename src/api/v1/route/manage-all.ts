@@ -206,6 +206,7 @@ app.post('/upload-dataset-company', function(req, res) {
         if (!req.files){
             return res.status(400).send('No files were uploaded.');
         }
+        console.log("hi")
         const file = req.files.file;
         const filename = req.files.file.name;
         const fileName = uniqid();
@@ -233,6 +234,7 @@ app.post('/upload-dataset-company', function(req, res) {
                                 dataset.year = data[i]["year"]
                                 dataset.faculty = data[i]["faculty"]
                                 dataset.salary = data[i]["salary"]
+                                dataset.amount = data[i]["amount"]
                                 await getMongoManager().save(dataset);
                             }
                             fs.unlink('./uploads/' + fileName + '.xls', function (err) {
@@ -252,6 +254,61 @@ app.post('/upload-dataset-company', function(req, res) {
                 }
             )
         });
+    }
+);
+
+app.post('/home-company',async function(req, res) {
+        let year = await universityInfo.getYear_Company()
+        let faculty = await universityInfo.getNameFaculty_Company(year)
+        let mostfaculty = await universityInfo.getMostFaculty(year)
+        let predictFaculty = await universityInfo.getPredictFaculty_Company(year)
+        console.log("hi")
+        res.status(200).json({
+            statusName: 'success',
+            year:year,
+            faculty:faculty,
+            mostFaculty:mostfaculty,
+            predictFaculty:predictFaculty
+        })
+    }
+);
+
+app.post('/check-most-faculty-company',async function(req, res) {
+        let year = await universityInfo.getYear_Company()
+        let faculty = await universityInfo.getMostFaculty_Company(year)
+        let amount = await universityInfo.getMostAmount_Company(year)
+        res.status(200).json({
+            statusName: 'success',
+            facultys:faculty,
+            amounts:amount
+        })
+    }
+);
+
+app.post('/check-lowest-faculty-company',async function(req, res) {
+        let year = await universityInfo.getYear_Company()
+        let faculty = await universityInfo.getLowestFaculty_Company(year)
+        let amount = await universityInfo.getLowestAmount_Company(year)
+        // let amount = await universityInfo.getdatainuniversirt()
+        // let facultys = pushData.faculty(result)
+        // let amounts = pushData.amount(result)
+        res.status(200).json({
+            statusName: 'success',
+            facultys:faculty,
+            amounts:amount
+        })
+    }
+);
+
+app.post('/check-faculty-company',async function(req, res) {
+        let year = req.body.year
+        let faculty = await universityInfo.getFaculty_Company(year)
+        let amount = await universityInfo.getAmount_Company(year)
+        res.status(200).json({
+            statusName: 'success',
+            facultys:faculty,
+            amounts:amount
+        })
     }
 );
 

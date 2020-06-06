@@ -21,4 +21,7 @@ export class Dataset_Company {
     @Column()
     salary: number
 
+    @Column()
+    amount : number
+
 }
