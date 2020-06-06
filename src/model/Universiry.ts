@@ -529,6 +529,40 @@ let universityInfo = {
             return false
         }
     },
+    getPercent_Graduate : async (years) => {
+        try {
+            let result_faculty = []
+            let result_amount = []
+            let sum = 0
+            for (let i =0;i<years.length;i++) {
+                let year = years[i].toString()
+                const facultys = await getMongoRepository(Dataset_Company).find({year: year})
+                for (let j = 0; j < facultys.length; j++) {
+                    if (result_faculty.indexOf(facultys[j].faculty) == -1) {
+                        result_faculty.push(facultys[j].faculty)
+                    }
+                }
+                let amount = Array(result_faculty.length).fill(1)
+                for (let x = 0; x < result_faculty.length; x++) {
+                    for (let y = 0;y<facultys.length;y++) {
+                        if (result_faculty[x] == facultys[y].faculty){
+                            amount[x] = amount[x]+1
+                            sum = sum+1
+                        }
+                    }
+                }
+                result_amount.push(amount)
+            }
+            console.log(sum)
+            console.log(result_faculty)
+            console.log(result_amount)
+            // return result_amount
+        } catch (err) {
+            console.log(err)
+            return false
+        }
+    },
+
 }
 
 

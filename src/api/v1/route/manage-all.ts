@@ -30,12 +30,12 @@ app.get('/home',async function(req, res) {
         let year = await universityInfo.getYear()
         let faculty = await universityInfo.getFaculty()
         let endyear = await pushData.endyear(year)
-        // let facultys = pushData.faculty(faculty)
-        let university_namess = pushData.university_name(university_names)
+        // // let facultys = pushData.faculty(faculty)
+        // let university_namess = pushData.university_name(university_names)
         let years = pushData.year(year)
         res.status(200).json({
             statusName: 'success',
-            university_names:university_namess,
+            university_names:university_names,
             years:years,
             facultys:faculty,
             endyear:endyear
@@ -257,7 +257,7 @@ app.post('/upload-dataset-company', function(req, res) {
     }
 );
 
-app.post('/home-company',async function(req, res) {
+app.get('/home-company',async function(req, res) {
         let year = await universityInfo.getYear_Company()
         let faculty = await universityInfo.getNameFaculty_Company(year)
         let mostfaculty = await universityInfo.getMostFaculty(year)
@@ -308,6 +308,17 @@ app.post('/check-faculty-company',async function(req, res) {
             statusName: 'success',
             facultys:faculty,
             amounts:amount
+        })
+    }
+);
+
+app.post('/check-faculty-graduate',async function(req, res) {
+        let faculty = req.body.faculty
+        let year = await universityInfo.getYear_Company()
+        let result = await universityInfo.getPercent_Graduate(year)
+        res.status(200).json({
+            statusName: 'success',
+            result:result
         })
     }
 );
